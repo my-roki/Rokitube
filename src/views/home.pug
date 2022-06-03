@@ -1,0 +1,9 @@
+extends base.pug
+include mixin/video.pug
+
+block content 
+  h1 This is Home Page
+  each video in videos 
+    +video(video)
+  else
+    span There is no video...

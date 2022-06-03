@@ -13,6 +13,8 @@ function handleListening() {
   console.log(`🚀 Server listening on : http://localhost:${port}`);
 }
 
+app.set("view engine", "pug");
+app.set("views", process.cwd() + "/src/views");
 app.use(logger);
 app.use("/", globalRouter);
 app.use("/videos", videoRouter);
