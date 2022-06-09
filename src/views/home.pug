@@ -2,6 +2,10 @@ extends base.pug
 include mixin/video.pug
 
 block content 
+  nav 
+    ul 
+      li 
+        a(href="/videos/upload") Upload Video
   h1 This is Home Page
   each video in videos 
     +video(video)
