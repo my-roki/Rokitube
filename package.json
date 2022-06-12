@@ -4,7 +4,7 @@
   "description": "Youtube clone built using NodeJS, Express, Mogo and ES6",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec babel-node src/server.js"
+    "dev": "nodemon --exec babel-node src/init.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/my-roki/youtube_clone#readme",
   "dependencies": {
+    "dayjs": "^1.11.3",
     "express": "^4.18.1",
     "mongoose": "^6.3.6",
     "morgan": "^1.10.0",
