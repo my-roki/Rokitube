@@ -1,9 +1,11 @@
 mixin video(info)
   div 
-    h4
+    h3
       a(href=`/videos/${info.id}`)=info.title 
+    each hashtag in info.hashtags
+      small=hashtag
     p=info.description
-    small Posted #{info.createdAt}. 
+    small Posted #{info.createdAtFromNow}. 
     br
     small #{info.meta.views} views.  
     br

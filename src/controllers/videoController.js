@@ -8,25 +8,39 @@ const fakeUser = {
   isLogin: true,
 };
 
-// TODO: fix posted using dayjs fancy(ex. 10 minute ago)
 dayjs.extend(relativeTime);
-export async function home(req, res) {
-  let videos = await Video.find({});
+const getVideoCreatedAtFromNow = (videos) => {
   videos.forEach((video) => {
-    video.createdAt = dayjs(video.createdAt).fromNow();
-    console.log(video.createdAt);
+    const fancy = dayjs(video.createdAt).fromNow();
+    video.createdAtFromNow = fancy;
   });
-  console.log(videos);
+  return videos;
+};
+
+export async function home(req, res) {
+  let videos = await Video.find({}).sort({ createdAt: "desc" });
+  videos = getVideoCreatedAtFromNow(videos);
   return res.render("home", { pageTitle: "Home", fakeUser, videos });
 }
 
-export function search(req, res) {
-  res.send("Search page");
+export async function search(req, res) {
+  const { keyword } = req.query;
+  let videos = [];
+  if (keyword) {
+    videos = await Video.find({
+      title: { $regex: new RegExp(keyword, "i") },
+    });
+    videos = getVideoCreatedAtFromNow(videos);
+  }
+  return res.render("search", { pageTitle: "Search", fakeUser, videos });
 }
 
 export async function watchVideo(req, res) {
   const { id } = req.params;
   const video = await Video.findById(id);
+  if (!video) {
+    return res.render("404", { pageTitle: "404 Video not found" });
+  }
   return res.render("watch", {
     pageTitle: video.title,
     video,
@@ -44,11 +58,7 @@ export async function uploadVideoPost(req, res) {
     await Video.create({
       title: title,
       description: description,
-      hashtags: hashtags
-        .split(" ")
-        .map((word) =>
-          !word.trim().startsWith("#") ? `#${word.trim()}` : word.trim(),
-        ),
+      hashtags: Video.formatHashtags(hashtags),
     });
     return res.redirect("/");
   } catch (err) {
@@ -63,17 +73,30 @@ export async function uploadVideoPost(req, res) {
 export async function editVideoGet(req, res) {
   const { id } = req.params;
   const video = await Video.findById(id);
+  if (!video) {
+    return res.render("404", { pageTitle: "404 Video not found" });
+  }
   res.render("edit", { pageTitle: `Edit ${video.title}`, fakeUser, video });
 }
 
 export async function editVideoPost(req, res) {
   const { id } = req.params;
-  const { title } = req.body;
-  let video = await Video.findById(id);
-  video.title = title;
+  const { title, description, hashtags } = req.body;
+  const video = await Video.exists({ _id: id });
+  if (!video) {
+    return res.render("404", { pageTitle: "Video not found." });
+  }
+  await Video.findByIdAndUpdate(id, {
+    title: title,
+    description: description,
+    hashtags: Video.formatHashtags(hashtags),
+  });
   return res.redirect(`/videos/${id}`);
 }
 
-export function deleteVideo(req, res) {
-  res.send(`Delete #${req.params.id} video page`);
+// TODO: Confirm message modal should exist before delete video
+export async function deleteVideo(req, res) {
+  const { id } = req.params;
+  await Video.findByIdAndDelete(id);
+  return res.redirect("/");
 }
