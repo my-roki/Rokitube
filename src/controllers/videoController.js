@@ -5,7 +5,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 
 const fakeUser = {
   username: "roki",
-  isLogin: true,
+  isLogin: false,
 };
 
 dayjs.extend(relativeTime);
@@ -20,7 +20,9 @@ const getVideoCreatedAtFromNow = (videos) => {
 export async function home(req, res) {
   let videos = await Video.find({}).sort({ createdAt: "desc" });
   videos = getVideoCreatedAtFromNow(videos);
-  return res.render("home", { pageTitle: "Home", fakeUser, videos });
+  return res
+    .status(200)
+    .render("home", { pageTitle: "Home", fakeUser, videos });
 }
 
 export async function search(req, res) {
@@ -32,16 +34,18 @@ export async function search(req, res) {
     });
     videos = getVideoCreatedAtFromNow(videos);
   }
-  return res.render("search", { pageTitle: "Search", fakeUser, videos });
+  return res
+    .status(200)
+    .render("search", { pageTitle: "Search", fakeUser, videos });
 }
 
 export async function watchVideo(req, res) {
   const { id } = req.params;
   const video = await Video.findById(id);
   if (!video) {
-    return res.render("404", { pageTitle: "404 Video not found" });
+    return res.status(404).render("404", { pageTitle: "404 Video not found" });
   }
-  return res.render("watch", {
+  return res.status(200).render("watch", {
     pageTitle: video.title,
     video,
     fakeUser,
@@ -49,7 +53,9 @@ export async function watchVideo(req, res) {
 }
 
 export function uploadVideoGet(req, res) {
-  return res.render("upload", { pageTitle: `Upload Video`, fakeUser });
+  return res
+    .status(200)
+    .render("upload", { pageTitle: `Upload Video`, fakeUser });
 }
 
 export async function uploadVideoPost(req, res) {
@@ -60,9 +66,9 @@ export async function uploadVideoPost(req, res) {
       description: description,
       hashtags: Video.formatHashtags(hashtags),
     });
-    return res.redirect("/");
+    return res.status(200).redirect("/");
   } catch (err) {
-    return res.render("upload", {
+    return res.status(400).render("upload", {
       pageTitle: `Upload Video`,
       fakeUser,
       errMessage: err._message,
@@ -74,9 +80,11 @@ export async function editVideoGet(req, res) {
   const { id } = req.params;
   const video = await Video.findById(id);
   if (!video) {
-    return res.render("404", { pageTitle: "404 Video not found" });
+    return res.status(404).render("404", { pageTitle: "404 Video not found" });
   }
-  res.render("edit", { pageTitle: `Edit ${video.title}`, fakeUser, video });
+  res
+    .status(200)
+    .render("edit", { pageTitle: `Edit ${video.title}`, fakeUser, video });
 }
 
 export async function editVideoPost(req, res) {
@@ -84,19 +92,19 @@ export async function editVideoPost(req, res) {
   const { title, description, hashtags } = req.body;
   const video = await Video.exists({ _id: id });
   if (!video) {
-    return res.render("404", { pageTitle: "Video not found." });
+    return res.status(404).render("404", { pageTitle: "Video not found." });
   }
   await Video.findByIdAndUpdate(id, {
     title: title,
     description: description,
     hashtags: Video.formatHashtags(hashtags),
   });
-  return res.redirect(`/videos/${id}`);
+  return res.status(200).redirect(`/videos/${id}`);
 }
 
 // TODO: Confirm message modal should exist before delete video
 export async function deleteVideo(req, res) {
   const { id } = req.params;
   await Video.findByIdAndDelete(id);
-  return res.redirect("/");
+  return res.status(200).redirect("/");
 }

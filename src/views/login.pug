@@ -1,0 +1,16 @@
+extends base.pug
+
+block content 
+  if errMessage
+    h3=errMessage
+  form(method="POST")
+    label(for="username") Username
+      input(type="text", name="username", required)
+    label(for="password") Password
+      input(type="password", name="password", required)
+    input(type="submit", value="Sign in")
+  
+  hr
+  div 
+    span Dont have account? 
+    a(href="/join") Sing up Now! &rarr;

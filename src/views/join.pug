@@ -1,0 +1,27 @@
+extends base.pug
+
+block content 
+  if errMessage
+    h3=errMessage
+  form(method="POST")
+    label(for="username") Username
+      input(type="text", name="username", required)
+    label(for="email") Email
+      input(type="email", name="email", required)
+    label(for="password") Password
+      input(type="password", name="password", required)
+    label(for="passwordConfirm") Password Confirm
+      input(type="password", name="passwordConfirm", required)
+    label(for="location") Location
+      input(type="text", name="location", required)
+    label(for="group") Group
+      input(type="text", list="depList", name="group", required)
+      datalist(id="depList")
+        option(value="1")
+        option(value="2")
+        option(value="3")
+    input(type="submit", value="Sign up")
+  hr
+  div 
+    span Already have account?  
+    a(href="/login")  Sing in Now! &rarr;
