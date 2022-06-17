@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import fetch from "node-fetch";
 
 export function joinGet(req, res) {
-  res.status(200).render("join", { pageTitle: "Join Page" });
+  res.status(200).render("user/join", { pageTitle: "Join Page" });
 }
 
 export async function joinPost(req, res) {
@@ -11,20 +11,20 @@ export async function joinPost(req, res) {
     req.body;
   const userExsist = await User.exists({ username: username });
   if (userExsist) {
-    return res.status(400).render("join", {
+    return res.status(400).render("user/join", {
       pageTitle: "Join Page",
-      errMessage: `The username "${username}" already exist`,
+      errMessage: `The username "${username}" already exist.`,
     });
   }
   const emailExsist = await User.exists({ email: email });
   if (emailExsist) {
-    return res.status(400).render("join", {
+    return res.status(400).render("user/join", {
       pageTitle: "Join Page",
-      errMessage: `The email "${email}" is already exist`,
+      errMessage: `The email "${email}" is already exist.`,
     });
   }
   if (password !== passwordConfirm) {
-    return res.status(400).render("join", {
+    return res.status(400).render("user/join", {
       pageTitle: "Join Page",
       errMessage: `The password does not match`,
     });
@@ -39,7 +39,7 @@ export async function joinPost(req, res) {
     });
     return res.status(200).redirect("/login");
   } catch (err) {
-    return res.status(400).render("join", {
+    return res.status(400).render("user/join", {
       pageTitle: "Join Page",
       errMessage: err._message,
     });
@@ -47,26 +47,26 @@ export async function joinPost(req, res) {
 }
 
 export function loginGet(req, res) {
-  res.render("login", { pageTitle: "Login" });
+  res.render("user/login", { pageTitle: "Login" });
 }
 
 export async function loginPost(req, res) {
   const { username, password } = req.body;
   const user = await User.findOne({ username, socialOnly: false });
   if (!user) {
-    return res.status(404).render("login", {
-      errMessage: "An account with this user does not exists",
+    return res.status(404).render("user/login", {
+      errMessage: "An account with this user does not exists.",
     });
   }
   const okPassword = await bcrypt.compare(password, user.password);
   if (!okPassword) {
-    return res.status(400).render("login", {
+    return res.status(400).render("user/login", {
       errMessage: "Wrong password!",
     });
   }
 
   req.session.isLogin = true;
-  req.session.username = username;
+  req.session.loginUser = user;
   return res.redirect("/");
 }
 
@@ -144,7 +144,7 @@ export async function finishGithubLogin(req, res) {
       });
     }
     req.session.isLogin = true;
-    req.session.username = user.username;
+    req.session.loginUser = user;
     return res.redirect("/");
   } else {
     return res.redirect("/login");
@@ -157,11 +157,105 @@ export function logout(req, res) {
 }
 
 export function userProfile(req, res) {
-  res.send(`#${req.params.id} User Profile page`);
+  res.send(
+    `#${req.params.id} User Profile page <br/><a href="/users/edit">Edit user &rarr;</a>`,
+  );
 }
 
-export function editUser(req, res) {
-  res.send("Edit user page");
+export function editUserGet(req, res) {
+  res.render("user/edit-user", { pageTitle: "Edit Profile" });
+}
+
+export async function editUserPost(req, res) {
+  const {
+    session: {
+      loginUser: { _id, email: currentEmail, socialOnly },
+    },
+    body: { username, email, location },
+  } = req;
+  // Social login cannot edit email
+  if (socialOnly && currentEmail !== email) {
+    return res.status(400).render("user/edit-user", {
+      pageTitle: "Edit Profile",
+      errMessage: "Social login accounts cannot change email.",
+    });
+  }
+  // Alreay exist username
+  const userExsist = await User.exists({
+    _id: { $ne: _id },
+    $or: [{ username }],
+  });
+  if (userExsist) {
+    return res.status(400).render("user/edit-user", {
+      pageTitle: "Edit Profile",
+      errMessage: `The username "${username}" already exist.`,
+    });
+  }
+  // Alreay exist email
+  const emailExsist = await User.exists({
+    _id: { $ne: _id },
+    $or: [{ email }],
+  });
+  if (emailExsist) {
+    return res.status(400).render("user/edit-user", {
+      pageTitle: "Edit Profile",
+      errMessage: `The email "${email}" is already exist.`,
+    });
+  }
+
+  const updateUser = await User.findByIdAndUpdate(
+    _id,
+    {
+      username,
+      email,
+      location,
+    },
+    { new: true },
+  );
+  req.session.loginUser = updateUser;
+  res.redirect("/users/profile");
+}
+
+export function changePasswordGet(req, res) {
+  return res.render("user/change-password", { pageTitle: "Change Password" });
+}
+
+export async function changePasswordPost(req, res) {
+  const {
+    session: {
+      loginUser: { _id, password },
+    },
+    body: { oldPassword, newPassword, newPasswordConfirm },
+  } = req;
+  const pageTitle = "Change Passworde";
+
+  const okPassword = await bcrypt.compare(oldPassword, password);
+  if (!okPassword) {
+    return res.status(400).render("user/change-password", {
+      pageTitle,
+      errMessage: "Wrong password!",
+    });
+  }
+
+  if (newPassword !== newPasswordConfirm) {
+    return res.status(400).render("user/change-password", {
+      pageTitle,
+      errMessage: "The password does not match",
+    });
+  }
+
+  if (oldPassword === newPassword) {
+    return res.status(400).render("user/change-password", {
+      pageTitle,
+      errMessage: "The old password equals new password",
+    });
+  }
+
+  const user = await User.findById(_id);
+  user.password = newPassword;
+  await user.save();
+  req.session.destroy();
+  return res.redirect("/login");
 }
 
 export function deleteUser(req, res) {

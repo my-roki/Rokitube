@@ -1,0 +1,13 @@
+extends ../base.pug
+
+block content
+    if errMessage
+        h3=errMessage
+    form(method="POST")
+        input(placeholder="Username", name="username", type="text", required, value=loginUser.username)
+        input(placeholder="Email", name="email", type="email", required, value=loginUser.email)
+        input(placeholder="Location", name="location", type="text", required, value=loginUser.location)
+        input(type="submit", value="Update Profile") 
+    if !loginUser.socialOnly
+        br
+        a(href="change-password") Change Password &rarr; 

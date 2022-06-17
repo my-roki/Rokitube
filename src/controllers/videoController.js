@@ -27,7 +27,9 @@ export async function search(req, res) {
     });
     videos = getVideoCreatedAtFromNow(videos);
   }
-  return res.status(200).render("search", { pageTitle: "Search", videos });
+  return res
+    .status(200)
+    .render("video/search", { pageTitle: "Search", videos });
 }
 
 export async function watchVideo(req, res) {
@@ -36,14 +38,14 @@ export async function watchVideo(req, res) {
   if (!video) {
     return res.status(404).render("404", { pageTitle: "404 Video not found" });
   }
-  return res.status(200).render("watch", {
+  return res.status(200).render("video/watch", {
     pageTitle: video.title,
     video,
   });
 }
 
 export function uploadVideoGet(req, res) {
-  return res.status(200).render("upload", { pageTitle: `Upload Video` });
+  return res.status(200).render("video/upload", { pageTitle: `Upload Video` });
 }
 
 export async function uploadVideoPost(req, res) {
@@ -56,7 +58,7 @@ export async function uploadVideoPost(req, res) {
     });
     return res.status(200).redirect("/");
   } catch (err) {
-    return res.status(400).render("upload", {
+    return res.status(400).render("video/upload", {
       pageTitle: `Upload Video`,
 
       errMessage: err._message,
@@ -70,7 +72,9 @@ export async function editVideoGet(req, res) {
   if (!video) {
     return res.status(404).render("404", { pageTitle: "404 Video not found" });
   }
-  res.status(200).render("edit", { pageTitle: `Edit ${video.title}`, video });
+  res
+    .status(200)
+    .render("video/edit-video", { pageTitle: `Edit ${video.title}`, video });
 }
 
 export async function editVideoPost(req, res) {
