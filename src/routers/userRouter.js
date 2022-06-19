@@ -33,6 +33,6 @@ userRouter
   .get(changePasswordGet)
   .post(changePasswordPost);
 userRouter.get("/delete", deleteUser);
-userRouter.get("/:id", userProfile);
+userRouter.get("/:id([0-9a-f]{24})", userProfile);
 
 export default userRouter;

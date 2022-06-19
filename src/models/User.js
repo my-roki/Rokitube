@@ -8,7 +8,10 @@ const userSchema = new mongoose.Schema({
   socialOnly: { type: Boolean, default: false },
   location: { type: String },
   group: { type: Number },
-  avatar: { type: String },
+  avatar: {
+    type: String,
+    default: "uploads/default_profile.jpg",
+  },
 });
 
 userSchema.pre("save", async function () {

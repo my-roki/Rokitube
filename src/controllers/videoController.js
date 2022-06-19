@@ -1,4 +1,5 @@
 import Video from "../models/Videos";
+import User from "../models/User";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -34,7 +35,7 @@ export async function search(req, res) {
 
 export async function watchVideo(req, res) {
   const { id } = req.params;
-  const video = await Video.findById(id);
+  const video = await Video.findById(id).populate("owner");
   if (!video) {
     return res.status(404).render("404", { pageTitle: "404 Video not found" });
   }
@@ -49,13 +50,20 @@ export function uploadVideoGet(req, res) {
 }
 
 export async function uploadVideoPost(req, res) {
-  const { path: videoUrl } = req.file;
-  const { title, description, hashtags } = req.body;
+  const {
+    file: { path: videoUrl },
+    body: { title, description, hashtags },
+    session: {
+      loginUser: { _id: owner },
+    },
+  } = req;
+
   try {
     await Video.create({
       videoUrl,
-      title: title,
-      description: description,
+      title,
+      description,
+      owner,
       hashtags: Video.formatHashtags(hashtags),
     });
     return res.status(200).redirect("/");

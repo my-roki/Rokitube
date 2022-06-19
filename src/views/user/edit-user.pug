@@ -4,10 +4,11 @@ block content
     if errMessage
         h3=errMessage
 
-    if(loginUser.avatar.startsWith("upload"))
-        img(src="/" + loginUser.avatar, width="256", height="auto")
-    if(loginUser.avatar.startsWith("http"))
-        img(src=loginUser.avatar, width="256", height="auto")
+    if (loginUser.avatar)
+        if(loginUser.avatar.startsWith("upload"))
+            img(src="/" + loginUser.avatar, width="256", height="auto")
+        if(loginUser.avatar.startsWith("http"))
+            img(src=loginUser.avatar, width="256", height="auto")
 
     form(method="POST", enctype="multipart/form-data")
         label(for="avatar") Avatar
@@ -15,6 +16,11 @@ block content
         input(placeholder="Username", name="username", type="text", required, value=loginUser.username)
         input(placeholder="Email", name="email", type="email", required, value=loginUser.email)
         input(placeholder="Location", name="location", type="text", required, value=loginUser.location)
+        input(placeholder="Group", type="text", list="depList", name="group", required)
+        datalist(id="depList")
+            option(value="1")
+            option(value="2")
+            option(value="3")
         input(type="submit", value="Update Profile") 
     if !loginUser.socialOnly
         br

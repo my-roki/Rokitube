@@ -5,8 +5,15 @@ block content
   div
     p=video.description
     small=video.createdAt
-  a(href=`${video.id}/edit`) Edit Video &rarr;
-  br
-  a(href=`${video.id}/delete` onclick="return confirm('Are you sure you want to delete this?')") Delete Video &rarr;
+  div
+    small Uploaded by 
+    a(href=`/users/${video.owner._id}`) #{video.owner.username}
+
+  - const ownerCorrect = String(video.owner._id) === String(loginUser._id)
+  - const loginUserGroup =  loginUser.group
+  if ownerCorrect || loginUserGroup===1
+    a(href=`${video.id}/edit`) Edit Video &rarr;
+    br
+    a(href=`${video.id}/delete` onclick="return confirm('Are you sure you want to delete this?')") Delete Video &rarr;
 
   

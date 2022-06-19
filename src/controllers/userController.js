@@ -156,10 +156,13 @@ export function logout(req, res) {
   return res.redirect("/");
 }
 
-export function userProfile(req, res) {
-  res.send(
-    `#${req.params.id} User Profile page <br/><a href="/users/edit">Edit user &rarr;</a>`,
-  );
+export async function userProfile(req, res) {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  if (!user) {
+    return res.status(404).render("404", { pageTitle: "404 Not Found" });
+  }
+  res.render("user/user-profile", { pageTitle: `${user.username}'s Profile` });
 }
 
 export function editUserGet(req, res) {
@@ -169,7 +172,7 @@ export function editUserGet(req, res) {
 export async function editUserPost(req, res) {
   const {
     session: {
-      loginUser: { _id, email: currentEmail, socialOnly },
+      loginUser: { _id, email: currentEmail, socialOnly, avatar },
     },
     body: { username, email, location },
     file,
@@ -215,7 +218,7 @@ export async function editUserPost(req, res) {
     { new: true },
   );
   req.session.loginUser = updateUser;
-  res.redirect("/users/profile");
+  res.redirect(`/users/${_id}`);
 }
 
 export function changePasswordGet(req, res) {

@@ -4,7 +4,7 @@ block content
   if errMessage 
     span=errMessage
   form(method="POST", enctype="multipart/form-data")
-    label(for="video") Avatar
+    label(for="video") Video
       input(id="video", name="video", type="file", accept="video/*", required)
     input(placeholder="Title", required, type="text", name="title", maxlength=80)
     input(placeholder="Description", required, type="text", name="description", minlength=20)

@@ -19,7 +19,7 @@ html(lang="ko")
             li 
               a(href="/users/logout") Logout
             li 
-              a(href="/users/profile") Profile
+              a(href=`/users/${loginUser._id}`) Profile
             
           else 
             li 
