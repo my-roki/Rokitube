@@ -3,7 +3,15 @@ extends ../base.pug
 block content
     if errMessage
         h3=errMessage
-    form(method="POST")
+
+    if(loginUser.avatar.startsWith("upload"))
+        img(src="/" + loginUser.avatar, width="256", height="auto")
+    if(loginUser.avatar.startsWith("http"))
+        img(src=loginUser.avatar, width="256", height="auto")
+
+    form(method="POST", enctype="multipart/form-data")
+        label(for="avatar") Avatar
+            input(id="avatar", name="avatar", type="file", accept="image/*")
         input(placeholder="Username", name="username", type="text", required, value=loginUser.username)
         input(placeholder="Email", name="email", type="email", required, value=loginUser.email)
         input(placeholder="Location", name="location", type="text", required, value=loginUser.location)

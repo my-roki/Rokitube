@@ -11,7 +11,11 @@ import {
   deleteUser,
 } from "../controllers/userController";
 
-import { protectMiddleware, publicOnlyMiddleware } from "../middleware";
+import {
+  protectMiddleware,
+  publicOnlyMiddleware,
+  uploadAvatar,
+} from "../middleware";
 
 const userRouter = express.Router();
 
@@ -22,7 +26,7 @@ userRouter
   .route("/edit")
   .all(protectMiddleware)
   .get(editUserGet)
-  .post(editUserPost);
+  .post(uploadAvatar.single("avatar"), editUserPost);
 userRouter
   .route("/change-password")
   .all(protectMiddleware)

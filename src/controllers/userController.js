@@ -172,6 +172,7 @@ export async function editUserPost(req, res) {
       loginUser: { _id, email: currentEmail, socialOnly },
     },
     body: { username, email, location },
+    file,
   } = req;
   // Social login cannot edit email
   if (socialOnly && currentEmail !== email) {
@@ -209,6 +210,7 @@ export async function editUserPost(req, res) {
       username,
       email,
       location,
+      avatar: file ? file.path : avatar,
     },
     { new: true },
   );

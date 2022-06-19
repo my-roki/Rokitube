@@ -1,3 +1,5 @@
+import multer from "multer";
+
 export function localMiddleware(req, res, next) {
   // console.log(req.session.isLogin);
   // console.log(req.session.loginUser);
@@ -21,3 +23,13 @@ export function publicOnlyMiddleware(req, res, next) {
     return next();
   }
 }
+
+export const uploadAvatar = multer({
+  dest: "uploads/avatar/",
+  limits: { fileSize: 3000000 },
+});
+
+export const uploadVideo = multer({
+  dest: "uploads/video/",
+  limits: { fileSize: 536870912 },
+});
