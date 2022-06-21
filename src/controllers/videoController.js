@@ -1,4 +1,4 @@
-import Video from "../models/Videos";
+import Video from "../models/Video";
 import User from "../models/User";
 
 import dayjs from "dayjs";
@@ -54,18 +54,22 @@ export async function uploadVideoPost(req, res) {
     file: { path: videoUrl },
     body: { title, description, hashtags },
     session: {
-      loginUser: { _id: owner },
+      loginUser: { _id },
     },
   } = req;
 
   try {
-    await Video.create({
+    const newVideo = await Video.create({
       videoUrl,
       title,
       description,
-      owner,
+      owner: _id,
       hashtags: Video.formatHashtags(hashtags),
     });
+
+    let user = await User.findById(_id);
+    user.videos.push(newVideo._id);
+    user.save();
     return res.status(200).redirect("/");
   } catch (err) {
     return res.status(400).render("video/upload", {
@@ -77,22 +81,41 @@ export async function uploadVideoPost(req, res) {
 }
 
 export async function editVideoGet(req, res) {
-  const { id } = req.params;
+  const {
+    params: { id },
+    session: {
+      loginUser: { _id },
+    },
+  } = req;
+
   const video = await Video.findById(id);
   if (!video) {
     return res.status(404).render("404", { pageTitle: "404 Video not found" });
   }
-  res
-    .status(200)
-    .render("video/edit-video", { pageTitle: `Edit ${video.title}`, video });
+  if (String(_id) !== String(video.owner)) {
+    return res.status(403).redirect("/");
+  }
+  return res.render("video/edit-video", {
+    pageTitle: `Edit ${video.title}`,
+    video,
+  });
 }
 
 export async function editVideoPost(req, res) {
-  const { id } = req.params;
-  const { title, description, hashtags } = req.body;
-  const video = await Video.exists({ _id: id });
+  const {
+    params: { id },
+    body: { title, description, hashtags },
+    session: {
+      loginUser: { _id },
+    },
+  } = req;
+
+  const video = await Video.findById(id);
   if (!video) {
     return res.status(404).render("404", { pageTitle: "Video not found." });
+  }
+  if (String(_id) !== String(video.owner)) {
+    return res.status(403).redirect("/");
   }
   await Video.findByIdAndUpdate(id, {
     title: title,
@@ -104,7 +127,22 @@ export async function editVideoPost(req, res) {
 
 // TODO: Confirm message modal should exist before delete video
 export async function deleteVideo(req, res) {
-  const { id } = req.params;
+  const {
+    params: { id },
+    session: {
+      loginUser: { _id },
+    },
+  } = req;
+  const video = await Video.findById(id);
+  const user = await User.findById(video.owner);
+  if (!video) {
+    return res.status(404).render("404", { pageTitle: "404 Video not found" });
+  }
+  if (String(_id) !== String(video.owner)) {
+    return res.status(403).redirect("/");
+  }
   await Video.findByIdAndDelete(id);
+  user.videos.splice(user.videos.indexOf(id), 1);
+  user.save();
   return res.status(200).redirect("/");
 }

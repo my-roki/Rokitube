@@ -1,4 +1,10 @@
 extends ../base.pug
+include ../mixin/video.pug
 
 block content
-  a(href="/users/edit") Edit user &rarr;
+
+  each video in user.videos  
+    +video(video)
+
+  if (String(loginUser._id) === String(user._id))
+    a(href="/users/edit") Edit user &rarr;

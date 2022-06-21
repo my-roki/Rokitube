@@ -1,4 +1,5 @@
 import User from "../models/User";
+import Video from "../models/Video";
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
 
@@ -158,11 +159,14 @@ export function logout(req, res) {
 
 export async function userProfile(req, res) {
   const { id } = req.params;
-  const user = await User.findById(id);
+  const user = await User.findById(id).populate("videos");
   if (!user) {
     return res.status(404).render("404", { pageTitle: "404 Not Found" });
   }
-  res.render("user/user-profile", { pageTitle: `${user.username}'s Profile` });
+  res.render("user/user-profile", {
+    pageTitle: `${user.username}'s Profile`,
+    user,
+  });
 }
 
 export function editUserGet(req, res) {
@@ -174,7 +178,7 @@ export async function editUserPost(req, res) {
     session: {
       loginUser: { _id, email: currentEmail, socialOnly, avatar },
     },
-    body: { username, email, location },
+    body: { username, email, location, group },
     file,
   } = req;
   // Social login cannot edit email
@@ -214,6 +218,7 @@ export async function editUserPost(req, res) {
       email,
       location,
       avatar: file ? file.path : avatar,
+      group,
     },
     { new: true },
   );

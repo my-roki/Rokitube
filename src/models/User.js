@@ -8,14 +8,13 @@ const userSchema = new mongoose.Schema({
   socialOnly: { type: Boolean, default: false },
   location: { type: String },
   group: { type: Number },
-  avatar: {
-    type: String,
-    default: "uploads/default_profile.jpg",
-  },
+  avatar: { type: String, default: "uploads/default_profile.jpg" },
+  videos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }],
 });
 
 userSchema.pre("save", async function () {
-  this.password = await bcrypt.hash(this.password, 5);
+  if (this.isModified("password"))
+    this.password = await bcrypt.hash(this.password, 5);
 });
 
 const User = mongoose.model("User", userSchema);
