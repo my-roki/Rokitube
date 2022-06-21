@@ -2,6 +2,7 @@ doctype html
 html(lang="ko")
   head
     link(rel="stylesheet" href="https://unpkg.com/mvp.css")
+    link(rel="stylesheet", href="/static/css/styles.css")
     title #{pageTitle} | Youtube Clone
   body
     header 
@@ -34,3 +35,4 @@ html(lang="ko")
       block content
     
     include partials/footer.pug
+    script(src="/static/js/main.js") 
