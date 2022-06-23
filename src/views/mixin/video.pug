@@ -1,13 +1,9 @@
 mixin video(info)
-  div 
-    h3
-      a(href=`/videos/${info.id}`)=info.title 
-    each hashtag in info.hashtags
-      small=hashtag
-    p=info.description
-    small Posted #{info.createdAtFromNow}. 
-    br
-    small #{info.meta.views} views.  
-    br
-    small #{info.meta.rating}/5
-    hr
+  a(href=`/videos/${info.id}`).video-mixin
+    div.video-mixin__thumb
+    div.video-mixin__data
+      span.video-mixin__title=info.title
+      div.video-mixin__meta
+        span #{info.owner.username} •  
+        span #{info.meta.views} 회 • 
+        span Posted #{info.createdAtFromNow}.

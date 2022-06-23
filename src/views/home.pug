@@ -2,9 +2,8 @@ extends base.pug
 include mixin/video.pug
 
 block content 
-  h1 Enjoy this Videos!
-  hr
-  each video in videos 
-    +video(video)
-  else
-    span There is no video...
+  div.video-grid
+    each video in videos
+        +video(video)
+    else
+        span.empty__message No videos found 

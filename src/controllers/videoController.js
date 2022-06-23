@@ -14,7 +14,9 @@ const getVideoCreatedAtFromNow = (videos) => {
 };
 
 export async function home(req, res) {
-  let videos = await Video.find({}).sort({ createdAt: "desc" });
+  let videos = await Video.find({})
+    .sort({ createdAt: "desc" })
+    .populate("owner");
   videos = getVideoCreatedAtFromNow(videos);
   return res.status(200).render("home", { pageTitle: "Home", videos });
 }
@@ -25,12 +27,10 @@ export async function search(req, res) {
   if (keyword) {
     videos = await Video.find({
       title: { $regex: new RegExp(keyword, "i") },
-    });
+    }).populate("owner");
     videos = getVideoCreatedAtFromNow(videos);
   }
-  return res
-    .status(200)
-    .render("video/search", { pageTitle: "Search", videos });
+  return res.render("video/search", { pageTitle: "Search", videos });
 }
 
 export async function watchVideo(req, res) {
