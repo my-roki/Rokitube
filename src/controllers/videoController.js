@@ -146,3 +146,14 @@ export async function deleteVideo(req, res) {
   user.save();
   return res.status(200).redirect("/");
 }
+
+export async function registerView(req, res) {
+  const { id } = req.params;
+  const video = await Video.findById(id);
+  if (!video) {
+    return res.sendStatus(404);
+  }
+  video.meta.views = video.meta.views + 1;
+  await video.save();
+  return res.sendStatus(200);
+}

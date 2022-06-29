@@ -1,4 +1,3 @@
-console.log("video player");
 const videoContainer = document.getElementById("videoContainer");
 const video = document.querySelector("video");
 const videoController = document.getElementById("videoController");
@@ -171,12 +170,18 @@ function keyboardShortcut(event) {
   }
 }
 
+async function handleEnded() {
+  const { id } = videoContainer.dataset;
+  await fetch(`/api/videos/${id}/view`, { method: "POST" });
+}
+
 playButton.addEventListener("click", handlePlayButton);
 muteButton.addEventListener("click", handleMuteButton);
 volumeRange.addEventListener("input", handleInputVolumeRange);
 volumeRange.addEventListener("change", handleChangeVolumeRange);
 video.addEventListener("loadeddata", handleTotalTime);
 video.addEventListener("timeupdate", handleCurrentTime);
+video.addEventListener("ended", handleEnded);
 timeline.addEventListener("input", handleTimelineInput);
 timeline.addEventListener("change", handleTimelineChange);
 fullScreenButton.addEventListener("click", handleGetFullScreen);
