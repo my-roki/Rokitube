@@ -232,6 +232,10 @@ export async function editUserPost(req, res) {
 }
 
 export function changePasswordGet(req, res) {
+  if (req.session.loginUser.socialOnly === true) {
+    req.flash("error", "Can't change password.");
+    return res.redirect("/");
+  }
   return res.render("user/change-password", { pageTitle: "Change Password" });
 }
 
@@ -270,6 +274,7 @@ export async function changePasswordPost(req, res) {
   user.password = newPassword;
   await user.save();
   req.session.destroy();
+  req.flash("info", "Password updated");
   return res.redirect("/login");
 }
 

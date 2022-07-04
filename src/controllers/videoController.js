@@ -94,6 +94,7 @@ export async function editVideoGet(req, res) {
     return res.status(404).render("404", { pageTitle: "404 Video not found" });
   }
   if (String(_id) !== String(video.owner)) {
+    req.flash("error", "Not Authorized");
     return res.status(403).redirect("/");
   }
   return res.render("video/edit-video", {
@@ -116,6 +117,7 @@ export async function editVideoPost(req, res) {
     return res.status(404).render("404", { pageTitle: "Video not found." });
   }
   if (String(_id) !== String(video.owner)) {
+    req.flash("error", "Not Authorized");
     return res.status(403).redirect("/");
   }
   await Video.findByIdAndUpdate(id, {
@@ -140,11 +142,13 @@ export async function deleteVideo(req, res) {
     return res.status(404).render("404", { pageTitle: "404 Video not found" });
   }
   if (String(_id) !== String(video.owner)) {
+    req.flash("error", "Not Authorized");
     return res.status(403).redirect("/");
   }
   await Video.findByIdAndDelete(id);
   user.videos.splice(user.videos.indexOf(id), 1);
   user.save();
+  req.flash("info", "Delete Successfully");
   return res.status(200).redirect("/");
 }
 

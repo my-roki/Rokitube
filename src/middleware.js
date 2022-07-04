@@ -12,12 +12,14 @@ export function protectMiddleware(req, res, next) {
   if (req.session.isLogin) {
     return next();
   } else {
+    req.flash("error", "Not Authorized");
     return res.redirect("/login");
   }
 }
 
 export function publicOnlyMiddleware(req, res, next) {
   if (req.session.isLogin) {
+    req.flash("error", "Not Authorized");
     return res.redirect("/");
   } else {
     return next();
