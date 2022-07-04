@@ -2,8 +2,9 @@ import mongoose, { mongo } from "mongoose";
 
 const videoSchema = new mongoose.Schema({
   videoUrl: { type: String, required: true },
+  thumbnailUrl: { type: String, required: true },
   title: { type: String, required: true, trim: true, maxLength: 80 },
-  description: { type: String, required: true, trim: true, minLength: 20 },
+  description: { type: String, required: true, trim: true },
   owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
   createdAt: { type: Date, required: true, default: Date.now },
   createdAtFromNow: { type: String },

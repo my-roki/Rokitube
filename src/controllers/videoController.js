@@ -51,7 +51,7 @@ export function uploadVideoGet(req, res) {
 
 export async function uploadVideoPost(req, res) {
   const {
-    file: { path: videoUrl },
+    files: { video, thumbnail },
     body: { title, description, hashtags },
     session: {
       loginUser: { _id },
@@ -60,7 +60,8 @@ export async function uploadVideoPost(req, res) {
 
   try {
     const newVideo = await Video.create({
-      videoUrl,
+      videoUrl: video[0].path,
+      thumbnailUrl: thumbnail[0].path,
       title,
       description,
       owner: _id,
