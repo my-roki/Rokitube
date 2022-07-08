@@ -148,9 +148,12 @@ function handleMouseLeave(event) {
 }
 
 function keyboardShortcut(event) {
+  if (event.target.id === "textarea") {
+    return;
+  }
+  event.preventDefault();
   switch (event.keyCode) {
     case 32: // space
-      event.preventDefault();
       handlePlayButton();
       break;
     case 77: // m

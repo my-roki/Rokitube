@@ -1,5 +1,6 @@
 import Video from "../models/Video";
 import User from "../models/User";
+import Comment from "../models/Comment";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -161,4 +162,24 @@ export async function registerView(req, res) {
   video.meta.views = video.meta.views + 1;
   await video.save();
   return res.sendStatus(200);
+}
+
+export async function createComment(req, res) {
+  const {
+    body: { text },
+    params: { id },
+    session: { loginUser },
+  } = req;
+
+  const video = await Video.findById(id);
+  if (!video) {
+    return res.sendStatus(404);
+  }
+
+  const comment = await Comment.create({
+    text,
+    owner: loginUser._id,
+    video: id,
+  });
+  return res.sendStatus(201);
 }

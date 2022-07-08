@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
   group: { type: Number },
   avatar: { type: String, default: "uploads/default_profile.jpg" },
   videos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }],
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
 });
 
 userSchema.pre("save", async function () {

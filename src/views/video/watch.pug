@@ -34,6 +34,16 @@ block content
     a(href=`${video.id}/edit`) Edit Video &rarr;
     br
     a(href=`${video.id}/delete` onclick="return confirm('Are you sure you want to delete this?')") Delete Video &rarr;
+
+  if isLogin
+    div.video__comment
+      form#comment-form 
+        textarea(cols="56", rows="5", placeholder="Write a comment")#textarea
+        input(type="submit", value="Add Comment")
+
+
 block scripts 
   script(src="/static/js/videoPlayer.js") 
+  if isLogin
+    script(src="/static/js/commentSection.js") 
   
