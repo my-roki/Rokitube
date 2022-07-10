@@ -21,12 +21,11 @@ block content
         span#fullscreen
           i.fas.fa-expand
           
-  div
-    p=video.description
-    small=video.createdAt
-  div
-    small Uploaded by 
-    a(href=`/users/${video.owner._id}`) #{video.owner.username}
+  div.video__data
+    p.video__title=video.title
+    small.video__createdAt=new Date(video.createdAt).toLocaleDateString("ko-kr", {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})
+    small.video__owner Uploaded by 
+      a(href=`/users/${video.owner._id}`) #{video.owner.username}
 
   - const ownerCorrect = String(video.owner._id) === String(loginUser._id)
   - const loginUserGroup =  loginUser.group
@@ -37,9 +36,9 @@ block content
 
   if isLogin
     div.video__add__comment
-      form#comment-form 
-        textarea(cols="56", rows="5", placeholder="Write a comment")#textarea
-        input(type="submit", value="Add Comment")
+      form#comment-form.comment-form 
+        textarea(cols="1000", rows="3", placeholder="Write a comment")#textarea
+        button Add Comment
 
   div#video-comments.video-comments 
     ul
@@ -47,7 +46,11 @@ block content
         li(data-id=comment._id).video-comments__comment
           span=comment.text
           if String(loginUser._id) === String(comment.owner)
-            span  ❌
+            div(name="handleComment")
+              span
+                i.fas.fa-pen
+              span
+                i.fas.fa-trash-alt
 
 block scripts 
   script(src="/static/js/videoPlayer.js") 

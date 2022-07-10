@@ -147,6 +147,7 @@ function handleMouseLeave(event) {
   }, 3000);
 }
 
+// TODO: only active when video focused(cannot use other default shortcut ㅠㅠ)
 function keyboardShortcut(event) {
   if (event.target.id === "textarea") {
     return;
