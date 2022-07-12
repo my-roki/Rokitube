@@ -124,53 +124,52 @@ function handleGetFullScreen(event) {
   }
 }
 
-function handleMouseMove(event) {
+function showControls() {
   if (controlsLeaveTimeout) {
     clearTimeout(controlsLeaveTimeout);
     controlsLeaveTimeout = null;
   }
-
   if (controlsMoveTimeout) {
     clearTimeout(controlsMoveTimeout);
     controlsMoveTimeout = null;
   }
-
   videoController.classList.add("showing");
-  controlsMoveTimeout = setTimeout(() => {
-    videoController.classList.remove("showing");
-  }, 3000);
+  controlsMoveTimeout = setTimeout(() => hideControls(), 3000);
 }
 
-function handleMouseLeave(event) {
-  controlsLeaveTimeout = setTimeout(() => {
-    videoController.classList.remove("showing");
-  }, 3000);
+function handleMouseLeave() {
+  controlsLeaveTimeout = setTimeout(() => hideControls(), 3000);
 }
 
-// TODO: only active when video focused(cannot use other default shortcut ㅠㅠ)
+function hideControls() {
+  videoController.classList.remove("showing");
+}
+
 function keyboardShortcut(event) {
-  if (event.target.id === "textarea") {
+  if (event.target.tagName === "TEXTAREA") {
     return;
   }
-  event.preventDefault();
-  switch (event.keyCode) {
-    case 32: // space
-      handlePlayButton();
-      break;
-    case 77: // m
-      handleMuteButton();
-      break;
-    case 70: // f
-      handleGetFullScreen();
-      break;
-    case 39: // right arrow
-      handleMouseMove();
-      video.currentTime = video.currentTime + 5;
-      break;
-    case 37: // left arrow
-      handleMouseMove();
-      video.currentTime = video.currentTime - 5;
-      break;
+  keydownPreventDefault(event);
+  showControls();
+  if (event.key === "f") {
+    handleGetFullScreen();
+  } else if (event.key === "m") {
+    handleMuteButton();
+  } else if (event.key === " ") {
+    handlePlayButton();
+  } else if (event.key === "ArrowLeft") {
+    video.currentTime = video.currentTime - 5;
+  } else if (event.key === "ArrowRight") {
+    video.currentTime = video.currentTime + 5;
+  }
+}
+
+function keydownPreventDefault(event) {
+  const { key } = event;
+  if (
+    ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].indexOf(key) > -1
+  ) {
+    event.preventDefault();
   }
 }
 
@@ -189,7 +188,7 @@ video.addEventListener("ended", handleEnded);
 timeline.addEventListener("input", handleTimelineInput);
 timeline.addEventListener("change", handleTimelineChange);
 fullScreenButton.addEventListener("click", handleGetFullScreen);
-videoContainer.addEventListener("mousemove", handleMouseMove);
+videoContainer.addEventListener("mousemove", showControls);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
 
 video.addEventListener("click", handlePlayButton);
