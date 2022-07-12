@@ -1,12 +1,15 @@
 // video mixin
 .video-mixin {
   .video-mixin__thumb {
+    width: 267px;
     height: 140px;
     border-radius: 7px;
-    width: 100%;
-    background-color: ivory;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
   }
   .video-mixin__data {
+    width: 267px;
     padding: 0px 15px;
     .video-mixin__title {
       font-size: 18px;

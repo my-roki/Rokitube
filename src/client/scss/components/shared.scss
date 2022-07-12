@@ -3,10 +3,11 @@
   font-size: 18px;
 }
 .video-grid {
-  display: grid;
-  gap: 50px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
+
 .auth-switch {
   text-align: center;
   margin-top: 40px;
@@ -14,6 +15,7 @@
     text-decoration: underline;
   }
 }
+
 .avatar {
   width: 150px;
   height: 150px;

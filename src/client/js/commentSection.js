@@ -4,36 +4,36 @@ let handelComments = document.querySelectorAll("div[name='handleComment']");
 const videoComments = document.querySelector("#video-comments");
 
 function addComment(text, id) {
-  const videoCommetsUl = videoComments.querySelector("ul");
-  const newCommentLi = document.createElement("li");
-  const newCommentText = document.createElement("span");
+  const ul = videoComments.querySelector("ul");
+  const li = document.createElement("li");
+  const newText = document.createElement("span");
 
-  const newCommentDiv = document.createElement("div");
-  const newCommentEdit = document.createElement("span");
-  const newCommentEditIcon = document.createElement("i");
-  const newCommentDelete = document.createElement("span");
-  const newCommentDeleteIcon = document.createElement("i");
+  const div = document.createElement("div");
+  const spanEdit = document.createElement("span");
+  const spanEditIcon = document.createElement("i");
+  const spanDelete = document.createElement("span");
+  const spanDeleteIcon = document.createElement("i");
 
-  newCommentLi.className = "video-comments__comment";
-  newCommentLi.dataset.id = id;
-  newCommentText.innerText = text;
+  li.className = "video-comments__comment";
+  li.dataset.id = id;
+  newText.innerText = text;
 
-  newCommentEditIcon.className = "fas fa-pen";
-  newCommentDeleteIcon.className = "fas fa-trash-alt";
-  newCommentDiv.setAttribute("name", "handleComment");
+  spanEditIcon.className = "fas fa-pen";
+  spanDeleteIcon.className = "fas fa-trash-alt";
+  div.setAttribute("name", "handleComment");
 
-  newCommentLi.appendChild(newCommentText);
-  newCommentEdit.appendChild(newCommentEditIcon);
-  newCommentDelete.appendChild(newCommentDeleteIcon);
-  newCommentDiv.appendChild(newCommentEdit);
-  newCommentDiv.appendChild(newCommentDelete);
-  newCommentLi.appendChild(newCommentDiv);
-  videoCommetsUl.prepend(newCommentLi);
-  newCommentEdit.addEventListener("click", handleCommentEdit);
-  newCommentDelete.addEventListener("click", handleCommentDelete);
+  li.appendChild(newText);
+  spanEdit.appendChild(spanEditIcon);
+  spanDelete.appendChild(spanDeleteIcon);
+  div.appendChild(spanEdit);
+  div.appendChild(spanDelete);
+  li.appendChild(div);
+  ul.prepend(li);
+
+  spanEdit.addEventListener("click", handleCommentEdit);
+  spanDelete.addEventListener("click", handleCommentDelete);
 }
 
-// TODO: comment CRUD challenge
 async function handleCommentCreate(event) {
   event.preventDefault();
   const textarea = commentForm.querySelector("textarea");

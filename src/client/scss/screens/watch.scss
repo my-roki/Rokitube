@@ -1,5 +1,6 @@
 .video__data {
   margin-top: 20px;
+  margin-left: 20px;
   display: flex;
   flex-direction: column;
   .video__title {
@@ -18,8 +19,13 @@
     }
   }
 }
+.video__handleButton,
+.video__add__comment {
+  margin: 16px 20px 0 20px;
+}
 
 .video-comments {
+  margin-top: 32px;
   display: flex;
   flex-direction: column;
   width: 100%;
