@@ -60,8 +60,8 @@ export async function uploadVideoPost(req, res) {
 
   try {
     const newVideo = await Video.create({
-      videoUrl: Video.formatFileDestination(video[0].path),
-      thumbnailUrl: Video.formatFileDestination(thumbnail[0].path),
+      videoUrl: Video.formatFileDestination(video[0].location),
+      thumbnailUrl: Video.formatFileDestination(thumbnail[0].location),
       title,
       description,
       owner: _id,

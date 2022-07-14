@@ -124,7 +124,7 @@ export async function finishGithubLogin(req, res) {
     // console.log(userEmailData);
 
     const targetEmail = userEmailData.find(
-      (email) => email.primary === true && email.verified === true,
+      (email) => email.primary === true && email.verified === true
     );
     // console.log(targetEmail);
     if (!targetEmail) {
@@ -222,10 +222,10 @@ export async function editUserPost(req, res) {
       username,
       email,
       location,
-      avatar: file ? file.path : avatar,
+      avatar: file ? file.location : avatar,
       group,
     },
-    { new: true },
+    { new: true }
   );
   req.session.loginUser = updateUser;
   res.redirect(`/users/${_id}`);
