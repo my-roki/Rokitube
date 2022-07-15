@@ -216,13 +216,14 @@ export async function editUserPost(req, res) {
     });
   }
 
+  const isProd = process.env.NODE_ENV;
   const updateUser = await User.findByIdAndUpdate(
     _id,
     {
       username,
       email,
       location,
-      avatar: file ? file.location : avatar,
+      avatar: file ? (isProd ? file.location : file.path) : avatar,
       group,
     },
     { new: true }
