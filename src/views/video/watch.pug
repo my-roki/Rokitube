@@ -4,7 +4,6 @@ block content
   div(data-id=video._id)#videoContainer
     if(video.videoUrl.startsWith("upload"))
       video(src=`/${video.videoUrl}`)
-      img(src="/" + loginUser.avatar).avatar
     if(video.videoUrl.startsWith("http"))
       video(src=video.videoUrl)
     div#videoController.videoController

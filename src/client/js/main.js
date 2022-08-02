@@ -4,7 +4,7 @@ const hamburger = document.getElementById("hamburger");
 const aside = document.querySelector("aside");
 const main = document.querySelector("main");
 
-const marginFold = "48px";
+const marginFold = "96px";
 const marginUnfold = "272px";
 
 const handleNavigation = () => {

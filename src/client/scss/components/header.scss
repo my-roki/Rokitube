@@ -58,6 +58,7 @@
   }
 
   .navbar__right {
+    min-width: 192px !important;
     ul {
       display: flex;
       justify-content: space-between;
