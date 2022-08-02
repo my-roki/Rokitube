@@ -5,9 +5,9 @@ block content
   div.profile__data
     if (loginUser.avatar)
       if(loginUser.avatar.startsWith("upload"))
-        img(src="/" + loginUser.avatar).avatar
+        img(src="/" + loginUser.avatar,crossorigin).avatar
       if(loginUser.avatar.startsWith("http"))
-        img(src=loginUser.avatar).avatar
+        img(src=loginUser.avatar,crossorigin).avatar
     h3=user.name
   div.video-grid
     each video in user.videos

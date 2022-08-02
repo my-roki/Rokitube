@@ -81,7 +81,7 @@ async function handleDownload() {
     "00:00:00",
     "-frames:v",
     "1",
-    files.thumbnail,
+    files.thumbnail
   );
 
   const mp4File = ffmpeg.FS("readFile", files.output);
