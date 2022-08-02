@@ -1,0 +1,62 @@
+aside 
+	nav#navigation.aside__navigation
+		div.aside__column
+			ul
+				a(href="/")
+					li
+						i.fas.fa-home
+						span Home 
+				a(href="/search")
+					li
+						i.fas.fa-compass
+						span Search 
+				//- TODO
+				a(href="/")
+					li 
+						i.fas.fa-film
+						span Subscriptons
+				
+				a(href="https://www.youtube.com/c/dlwlrma")
+					li 
+						i.fas.fa-heart
+						span IU Channel
+		div.aside__column
+			ul 
+				//- TODO
+				a(href="/")
+					li 
+						i.fas.fa-photo-video
+						span Library
+				a(href=`/users/${loginUser._id}`)
+					li 
+						i.fas.fa-user-alt
+						span My Profile
+				//- TODO
+				a(href="/")
+					li 
+						i.fas.fa-tv
+						span My Video 
+		
+		div.aside__column
+			span.aside__column__subscriptions Subscriptions
+				ul#subscribe 
+					if isLogin
+						a(href="/")
+							li 
+								img(src=loginUser.avatar).avatar.avatar__subscriptions
+								span 이지금
+						a(href="/")
+							li
+								img(src=loginUser.avatar).avatar.avatar__subscriptions 
+								span 이지은
+						a(href="/")
+							li 
+								img(src=loginUser.avatar).avatar.avatar__subscriptions
+								span 이지동
+					else 
+						br
+						span Sign in to like videos, comment, and subscribe.
+						li.aside__button
+							a(href="/login")  Sign in
+
+	include footer.pug

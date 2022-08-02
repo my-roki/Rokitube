@@ -1,30 +1,82 @@
-header {
-  padding: 20px 50px;
+.navbar {
+  padding: 20px 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  .header__logo {
-    color: $red;
-    font-size: 38px;
-  }
-  ul {
+  background-color: $bar-color;
+
+  .navbar__left {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    li {
-      margin-left: 30px;
-      font-size: 14px;
-      font-weight: 600;
-      text-transform: uppercase;
+    .navbar__hamburger {
+      margin-right: 32px;
+      font-size: 20px;
+      cursor: pointer;
     }
-    i {
-      font-size: 16px;
+    .navbar__logo {
+      display: flex;
+      font-family: "Mouse Memoirs", sans-serif;
+      font-size: 32px;
+      color: $red;
+      span {
+        width: 128px !important;
+        padding-left: 8px;
+        color: $white;
+      }
     }
   }
-  .header__btn {
-    background-color: white;
-    color: $bg-color;
-    padding: 5px 10px;
-    border-radius: 5px;
+
+  .navber__search {
+    width: 80%;
+    max-width: 720px;
+    margin: 0 48px;
+    .search__form {
+      display: flex;
+      position: relative;
+      align-items: center;
+      input {
+        all: unset;
+        padding: 15px 20px;
+        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: black;
+        font-size: 16px;
+        color: white;
+        width: 100%;
+      }
+      button {
+        all: unset;
+        width: 64px;
+        height: 54px;
+        background-color: #323232;
+        font-size: 18px;
+        text-align: center;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .navbar__right {
+    ul {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      li {
+        margin-left: 30px;
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      i {
+        font-size: 20px;
+      }
+    }
+    .header__btn {
+      background-color: white;
+      color: $bg-color;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
   }
 }

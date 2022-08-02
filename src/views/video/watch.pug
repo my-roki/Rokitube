@@ -2,7 +2,11 @@ extends ../base.pug
 
 block content 
   div(data-id=video._id)#videoContainer
-    video(src=`${video.videoUrl}`)
+    if(video.videoUrl.startsWith("upload"))
+      video(src=`/${video.videoUrl}`)
+      img(src="/" + loginUser.avatar).avatar
+    if(video.videoUrl.startsWith("http"))
+      video(src=video.videoUrl)
     div#videoController.videoController
       div.videoController__play
         span#play.videoController__playButton

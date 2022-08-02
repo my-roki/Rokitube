@@ -1,22 +1,36 @@
 header 
-  a(href="/").header__logo
-    i.fab.fa-youtube
-  nav 
-    ul 
-      li 
-        a(href="/search")
+  nav.navbar 
+    div.navbar__left
+      span#hamburger.navbar__hamburger
+        i.fas.fa-bars
+      a(href="/").navbar__logo
+        i.fab.fa-youtube
+        span ROKI Video
+
+    div.navber__search
+      form(action="search" method="GET").search__form
+        input(placeholder="Search by title", type="text", name="keyword")
+        button
           i.fas.fa-search
-      if isLogin  
-        li 
-          a(href="/videos/upload") Upload Video
-        li 
-          a(href="/users/logout") Logout
-        li 
-          a(href=`/users/${loginUser._id}`) Profile
-        
-      else 
-        li 
-          a(href="/login") Sign in
-        li 
-          a(href="/join").header__btn Sign up
+    div.navbar__right
+      ul
+        if isLogin  
+          li 
+            a(href="/videos/upload") 
+              i.fas.fa-video
+          li 
+            a(href="/users/logout")
+              i.fas.fa-sign-out-alt
+          li 
+            a(href=`/users/${loginUser._id}`)
+              if (loginUser.avatar)
+                if(loginUser.avatar.startsWith("upload"))
+                  img(src="/" + loginUser.avatar).avatar.avatar__smallprofile
+                if(loginUser.avatar.startsWith("http"))
+                  img(src=loginUser.avatar).avatar.avatar__smallprofile
+        else 
+          li 
+            a(href="/login") Sign in
+          li 
+            a(href="/join").header__btn Sign up
 
