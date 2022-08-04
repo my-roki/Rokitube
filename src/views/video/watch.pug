@@ -31,8 +31,7 @@ block content
       a(href=`/users/${video.owner._id}`) #{video.owner.username}
 
   - const ownerCorrect = String(video.owner._id) === String(loginUser._id)
-  - const loginUserGroup =  loginUser.group
-  if ownerCorrect || loginUserGroup===1
+  if ownerCorrect
     div.video__handleButton
       a(href=`${video.id}/edit`) Edit Video &rarr;
       br

@@ -1,7 +1,5 @@
 import express from "express";
 import {
-  startGithubLogin,
-  finishGithubLogin,
   logout,
   userProfile,
   editUserGet,
@@ -10,6 +8,13 @@ import {
   changePasswordPost,
   deleteUser,
 } from "../controllers/userController";
+
+import {
+  startGithubLogin,
+  finishGithubLogin,
+  startGoogleLogin,
+  finishGoogleLogin,
+} from "../controllers/authController";
 
 import {
   protectMiddleware,
@@ -21,6 +26,8 @@ const userRouter = express.Router();
 
 userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
 userRouter.get("/github/finish", publicOnlyMiddleware, finishGithubLogin);
+userRouter.get("/google/start", publicOnlyMiddleware, startGoogleLogin);
+userRouter.get("/google/finish", publicOnlyMiddleware, finishGoogleLogin);
 userRouter.get("/logout", protectMiddleware, logout);
 userRouter
   .route("/edit")

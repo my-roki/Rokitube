@@ -45,10 +45,16 @@ header {
 }
 
 aside {
+  width: 272px;
+  height: 100vh;
+  z-index: 1;
+
   position: fixed;
   top: 0;
   left: 0;
   background-color: $bar-color;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 main {
@@ -60,10 +66,8 @@ main {
 }
 
 footer {
-  position: absolute;
-  height: 50px;
-  bottom: 56px;
-  left: 24px;
+  margin: 16px 0 0 16px;
+  height: 96px;
   clear: both;
 }
 

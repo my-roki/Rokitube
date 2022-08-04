@@ -1,14 +1,12 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
-import fetch from "node-fetch";
 
 export function joinGet(req, res) {
   res.status(200).render("user/join", { pageTitle: "Join Page" });
 }
 
 export async function joinPost(req, res) {
-  const { username, email, password, passwordConfirm, location, group } =
-    req.body;
+  const { username, email, password, passwordConfirm } = req.body;
   const userExsist = await User.exists({ username: username });
   if (userExsist) {
     return res.status(400).render("user/join", {
@@ -34,8 +32,6 @@ export async function joinPost(req, res) {
       username: username,
       email: email,
       password: password,
-      location: location,
-      group: parseInt(group),
     });
     return res.status(200).redirect("/login");
   } catch (err) {
@@ -70,87 +66,6 @@ export async function loginPost(req, res) {
   return res.redirect("/");
 }
 
-export function startGithubLogin(req, res) {
-  const baseUrl = "https://github.com/login/oauth/authorize";
-  const config = {
-    client_id: process.env.GITHUB_CLIENT,
-    allow_signup: false,
-    scope: "read:user user:email",
-  };
-  const params = new URLSearchParams(config).toString();
-  const resultUrl = `${baseUrl}?${params}`;
-
-  res.redirect(resultUrl);
-}
-
-export async function finishGithubLogin(req, res) {
-  const baseUrl = "https://github.com/login/oauth/access_token";
-  const config = {
-    client_id: process.env.GITHUB_CLIENT,
-    client_secret: process.env.GITHUB_SECRET,
-    code: req.query.code,
-  };
-
-  const params = new URLSearchParams(config).toString();
-  const resultUrl = `${baseUrl}?${params}`;
-  const tokenData = await (
-    await fetch(resultUrl, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-      },
-    })
-  ).json();
-
-  const apiUrl = "https://api.github.com";
-  if ("access_token" in tokenData) {
-    const { access_token } = tokenData;
-    const userData = await (
-      await fetch(`${apiUrl}/user`, {
-        headers: {
-          Authorization: `token ${access_token}`,
-        },
-      })
-    ).json();
-    const userEmailData = await (
-      await fetch(`${apiUrl}/user/emails`, {
-        headers: {
-          Authorization: `token ${access_token}`,
-        },
-      })
-    ).json();
-
-    // console.log(userData);
-    // console.log(userEmailData);
-
-    const targetEmail = userEmailData.find(
-      (email) => email.primary === true && email.verified === true
-    );
-    // console.log(targetEmail);
-    if (!targetEmail) {
-      return res.redirect("/login");
-    }
-
-    let user = await User.findOne({ email: targetEmail.email });
-    if (!user) {
-      user = await User.create({
-        username: userData.name ? userData.name : userData.login,
-        email: targetEmail.email,
-        password: "",
-        socialOnly: true,
-        location: userData.location ? userData.location : "Nowhere",
-        group: 3,
-        avatar: userData.avatar_url,
-      });
-    }
-    req.session.isLogin = true;
-    req.session.loginUser = user;
-    return res.redirect("/");
-  } else {
-    return res.redirect("/login");
-  }
-}
-
 export function logout(req, res) {
   req.session.destroy();
   return res.redirect("/");
@@ -183,7 +98,7 @@ export async function editUserPost(req, res) {
     session: {
       loginUser: { _id, email: currentEmail, socialOnly, avatar },
     },
-    body: { username, email, location, group },
+    body: { username, email },
     file,
   } = req;
   // Social login cannot edit email
@@ -222,9 +137,7 @@ export async function editUserPost(req, res) {
     {
       username,
       email,
-      location,
       avatar: file ? (isProd ? file.location : file.path) : avatar,
-      group,
     },
     { new: true }
   );

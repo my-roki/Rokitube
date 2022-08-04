@@ -1,6 +1,6 @@
 form:not(.search__form) {
   max-width: 420px;
-  margin: 0 auto;
+  margin: auto;
   &:not(.search__form) {
     padding: 30px;
     background-color: rgba($color: $bg-color, $alpha: 0.7);
@@ -18,7 +18,7 @@ input[type="submit"] {
   background-color: black;
   margin-bottom: 5px;
   font-size: 16px;
-  color: white;
+  color: $white;
   width: 90%;
   &::placeholder {
     color: rgba(255, 255, 255, 0.7);
@@ -27,10 +27,11 @@ input[type="submit"] {
 
 input[type="submit"],
 .social__btn {
+  margin-bottom: 8px;
   border-radius: 5px;
   padding: 12px 20px;
-  background-color: white !important;
-  color: rgba($color: $red, $alpha: 1) !important;
+  background-color: $white !important;
+  color: rgba($color: $bg-color, $alpha: 0.8) !important;
   text-align: center !important;
   cursor: pointer;
   display: block;

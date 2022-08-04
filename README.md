@@ -18,3 +18,12 @@ https://youtube-myroki.herokuapp.com/
 - /videos/upload -> Upload Video
 - /videos/:id/edit -> Edit Video
 - /videos/:id/delete -> Delete Video
+
+<!-- TODO: Google Login -->
+<!-- TODO: Kakao Login -->
+<!-- TODO: 회원 탈퇴 기능 -->
+<!-- TODO: Video screen view -->
+<!-- TODO: Subscribe page -->
+<!-- TODO: Subscribes in sidebar -->
+<!-- TODO: Like page -->
+<!-- TODO: Play Random video page  -->
