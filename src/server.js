@@ -19,6 +19,7 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", [
     "https://lh3.googleusercontent.com/",
     "https://avatars.githubusercontent.com/",
+    "http://k.kakaocdn.net/",
   ]);
   res.header(
     "Access-Control-Allow-Headers",

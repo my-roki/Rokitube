@@ -14,6 +14,8 @@ import {
   finishGithubLogin,
   startGoogleLogin,
   finishGoogleLogin,
+  startKakaoLogin,
+  finishKakaoLogin,
 } from "../controllers/authController";
 
 import {
@@ -28,6 +30,9 @@ userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
 userRouter.get("/github/finish", publicOnlyMiddleware, finishGithubLogin);
 userRouter.get("/google/start", publicOnlyMiddleware, startGoogleLogin);
 userRouter.get("/google/finish", publicOnlyMiddleware, finishGoogleLogin);
+userRouter.get("/kakao/start", publicOnlyMiddleware, startKakaoLogin);
+userRouter.get("/kakao/finish", publicOnlyMiddleware, finishKakaoLogin);
+
 userRouter.get("/logout", protectMiddleware, logout);
 userRouter
   .route("/edit")
