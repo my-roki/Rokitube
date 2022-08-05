@@ -34,6 +34,14 @@ export async function search(req, res) {
 }
 
 export async function watchVideo(req, res) {
+  let videos = await Video.find({})
+    .sort({ createdAt: "desc" })
+    .populate("owner");
+  videos = getVideoCreatedAtFromNow(videos);
+  videos = videos.sort(() => Math.random() - 0.5);
+  if (videos.length > 10) {
+    videos = videos.slice(0, 10);
+  }
   const { id } = req.params;
   const video = await Video.findById(id).populate("owner").populate("comments");
   if (!video) {
@@ -42,6 +50,7 @@ export async function watchVideo(req, res) {
   return res.status(200).render("video/watch", {
     pageTitle: video.title,
     video,
+    videos,
   });
 }
 

@@ -83,7 +83,7 @@ function handleCommentEdit(event) {
   const saveButton = document.createElement("button");
   const cancelButton = document.createElement("button");
 
-  editForm.className = "comment-form";
+  editForm.className = "comment-form nform";
   saveButton.innerText = "Save";
   cancelButton.innerText = "Cancel";
   editTextArea.innerText = li.firstChild.innerText;

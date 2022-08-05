@@ -25,12 +25,10 @@
 }
 
 .video-comments {
-  margin-top: 32px;
+  margin: 32px 0 128px 0;
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin: 0 auto;
-  margin-top: 20px;
   .video-comments__comment {
     padding: 10px;
     margin: 0 24px 16px 24px;
