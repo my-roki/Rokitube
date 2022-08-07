@@ -14,32 +14,31 @@ function commentComponent(
   li.className = "video-comments__comment";
   li.dataset.id = newCommentId;
 
-  const result = `
-    <div class="video-comments__payloads">
-      <img src="${newAvatar}" />
-      <div class="video-comments__contents">
-        <div class="video-comments__commentinfo">
-          <span>${newUsername}</span>
-          <span class="video-comments__createdAt"> ${newCreatedAt}</span>
-        </div>
-        <div class="video-comments__text">  
-          <span id="comments-text">${text}</span>
-        </div>
-        <div class="comment__like">
-          <i class="far fa-thumbs-up"></>
-          <i class="far fa-thumbs-down"></>
-          <span> report </span>
-        </div>
+  const result = `<div class="video-comments__payloads">
+    <img src="${newAvatar}" />
+    <div class="video-comments__contents">
+      <div class="video-comments__commentinfo">
+        <span>${newUsername}</span>
+        <span class="video-comments__createdAt"> ${newCreatedAt}</span>
+      </div>
+      <div class="video-comments__text">
+        <span id="comments-text">${text}</span>
+      </div>
+      <div class="comment__like">
+        <i class="far fa-thumbs-up"></i>
+        <i class="far fa-thumbs-down"></i>
+        <span> report </span>
       </div>
     </div>
-    <div name="handleComment">
-      <span id="comments-edit">
-        <i class="fas fa-pen"></i>
-      </span>
-      <span id="comments-delete">
-        <i class="fas fa-trash-alt"></i>
-      </span>
-    </div>`;
+  </div>
+  <div name="handleComment">
+    <span id="comments-edit">
+      <i class="fas fa-pen"></i>
+    </span>
+    <span id="comments-delete">
+      <i class="fas fa-trash-alt"></i>
+    </span>
+  </div>`;
 
   li.innerHTML = result;
   return li;

@@ -161,7 +161,7 @@ export function startKakaoLogin(req, res) {
   const baseUrl = "https://kauth.kakao.com/oauth/authorize";
   const config = {
     client_id: process.env.KAKAO_CLIENT,
-    redirect_uri: "http://localhost:4000/users/kakao/finish",
+    redirect_uri: process.env.DOMAIN + "/users/kakao/finish",
     response_type: "code",
     scope: "profile_nickname,account_email,profile_image",
   };
