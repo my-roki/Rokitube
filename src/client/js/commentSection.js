@@ -14,13 +14,22 @@ function commentComponent(
   li.className = "video-comments__comment";
   li.dataset.id = newCommentId;
 
-  const result = `<div class="video-comments__payloads">
+  const result = `
+    <div class="video-comments__payloads">
       <img src="${newAvatar}" />
-      <div>
-        <span>${newUsername}</span>
-        <span class="video-comments__createdAt"> ${newCreatedAt}</span>
-        <h3>${text}</h3>
-        <h3 class="like">like3 dislike report</h3>
+      <div class="video-comments__contents">
+        <div class="video-comments__commentinfo">
+          <span>${newUsername}</span>
+          <span class="video-comments__createdAt"> ${newCreatedAt}</span>
+        </div>
+        <div class="video-comments__text">  
+          <span id="comments-text">${text}</span>
+        </div>
+        <div class="comment__like">
+          <i class="far fa-thumbs-up"></>
+          <i class="far fa-thumbs-down"></>
+          <span> report </span>
+        </div>
       </div>
     </div>
     <div name="handleComment">
@@ -86,7 +95,7 @@ async function updateComment(editForm, li, text, commentId) {
   });
   if (response.status == 200) {
     videoComments.removeChild(editForm);
-    li.querySelector("h3").innerText = text;
+    li.querySelector("#comment-text").innerText = text;
     li.style = "";
   }
 }
@@ -106,7 +115,7 @@ function handleCommentEdit(event) {
   editForm.className = "comment-form nform";
   saveButton.innerText = "Save";
   cancelButton.innerText = "Cancel";
-  editTextArea.innerText = li.querySelector("h3").innerText;
+  editTextArea.innerText = li.querySelector("#comment-text").innerText;
 
   editForm.appendChild(editTextArea);
   editForm.appendChild(saveButton);
@@ -126,6 +135,7 @@ function handleCommentEdit(event) {
 
 async function handleCommentDelete(event) {
   const li = event.target.parentElement.parentElement.parentElement;
+  console.log(li);
   const {
     dataset: { id },
   } = li;

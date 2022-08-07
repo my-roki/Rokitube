@@ -28,7 +28,6 @@
   margin: 32px 0 128px 0;
   display: flex;
   flex-direction: column;
-  width: 100%;
   .video-comments__comment {
     padding: 10px;
     margin: 0 24px 16px 24px;
@@ -48,10 +47,17 @@
         border-radius: 50%;
         margin-right: 8px;
       }
-      .video-comments__createdAt {
-        padding-left: 4px;
-        font-size: 14px;
-        color: rgba(255, 255, 255, 0.5);
+      .video-comments__commentinfo {
+        .video-comments__createdAt {
+          padding-left: 4px;
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.5);
+        }
+      }
+      .video-comments__text {
+        span {
+          word-break: break-all;
+        }
       }
       .comment__like {
         margin-top: 12px;

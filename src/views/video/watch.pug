@@ -52,10 +52,12 @@ block content
             li(data-id=comment._id).video-comments__comment
               div.video-comments__payloads
                 img(src=comment.owner.avatar)
-                div
-                  span=comment.owner.username
-                  span.video-comments__createdAt=comment.createdAtFromNow
-                  h3=comment.text
+                div.video-comments__contents
+                  div.video-comments__commentinfo
+                    span=comment.owner.username
+                    span.video-comments__createdAt=comment.createdAtFromNow
+                  div.video-comments__text
+                    span#comment-text=comment.text
                   div.comment__like
                     i.far.fa-thumbs-up
                     i.far.fa-thumbs-down
@@ -63,9 +65,9 @@ block content
                     
               if String(loginUser._id) === String(comment.owner._id)
                 div(name="handleComment").comment__menu
-                  span
+                  span#comments-edit
                     i.fas.fa-pen
-                  span
+                  span#comments-delete
                     i.fas.fa-trash-alt
 
     div.video-section__second
