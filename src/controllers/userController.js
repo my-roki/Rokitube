@@ -34,7 +34,7 @@ export async function joinPost(req, res) {
       username: username,
       email: email,
       password: password,
-      avatar: "/static/images/default-profile.png",
+      avatar: "static/images/default-profile.png",
     });
     return res.status(200).redirect("/login");
   } catch (err) {

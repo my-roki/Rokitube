@@ -24,10 +24,10 @@ header
           li 
             a(href=`/users/${loginUser._id}`)
               if (loginUser.avatar)
-                if(loginUser.avatar.startsWith("upload"))
-                  img(src="/" + loginUser.avatar).avatar.avatar__smallprofile
                 if(loginUser.avatar.startsWith("http"))
                   img(src=loginUser.avatar).avatar.avatar__smallprofile
+                else
+                  img(src="/" + loginUser.avatar).avatar.avatar__smallprofile
         else 
           li 
             a(href="/login") Sign in

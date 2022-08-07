@@ -4,10 +4,10 @@ include ../mixin/video.pug
 block content
   div.profile__data
     if (user.avatar)
-      if(user.avatar.startsWith("upload"))
-        img(src="/" + user.avatar).avatar
       if(user.avatar.startsWith("http"))
         img(src=loginUser.avatar).avatar
+      else
+        img(src="/" + user.avatar).avatar
     h3=user.username
 
   div.video-grid
