@@ -50,9 +50,19 @@ block content
         ul
           each comment in video.comments.reverse()
             li(data-id=comment._id).video-comments__comment
-              span=comment.text
-              if String(loginUser._id) === String(comment.owner)
-                div(name="handleComment")
+              div.video-comments__payloads
+                img(src=comment.owner.avatar)
+                div
+                  span=comment.owner.username
+                  span.video-comments__createdAt=comment.createdAtFromNow
+                  h3=comment.text
+                  div.comment__like
+                    i.far.fa-thumbs-up
+                    i.far.fa-thumbs-down
+                    span report
+                    
+              if String(loginUser._id) === String(comment.owner._id)
+                div(name="handleComment").comment__menu
                   span
                     i.fas.fa-pen
                   span

@@ -12,3 +12,12 @@
     font-size: 18px;
   }
 }
+
+.profile__menu {
+  margin-left: 32px;
+  display: flex;
+  flex-direction: column;
+  a {
+    margin: 8px 0;
+  }
+}

@@ -23,7 +23,16 @@ export async function createComment(req, res) {
   video.comments.push(comment._id);
   user.save();
   video.save();
-  return res.status(201).json({ newCommentId: comment._id });
+
+  const { username, avatar } = user;
+  const { _id, createdAt } = comment;
+
+  return res.status(201).json({
+    newCommentId: _id,
+    newUsername: username,
+    newAvatar: avatar,
+    newCreatedAt: createdAt,
+  });
 }
 
 export async function updateComment(req, res) {

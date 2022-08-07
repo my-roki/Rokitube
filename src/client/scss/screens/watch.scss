@@ -38,13 +38,40 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-  div {
-    cursor: pointer;
+    .video-comments__payloads {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        margin-right: 8px;
+      }
+      .video-comments__createdAt {
+        padding-left: 4px;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.5);
+      }
+      .comment__like {
+        margin-top: 12px;
+        * {
+          margin-right: 24px;
+          cursor: pointer;
+        }
+      }
+    }
+    .comment__menu {
+      width: 88px;
+      height: inherit;
+      display: flex;
+      justify-content: space-between;
+    }
   }
   .fas {
     font-size: large;
     color: #ffffff;
     padding: 0 12px;
+    cursor: pointer;
   }
 }

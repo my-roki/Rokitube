@@ -19,10 +19,10 @@ https://youtube-myroki.herokuapp.com/
 - /videos/:id/edit -> Edit Video
 - /videos/:id/delete -> Delete Video
 
-<!-- TODO: 회원 탈퇴 기능 -->
 <!-- TODO: Video screen view -->
 <!-- TODO: Subscribe page -->
 <!-- TODO: Subscribes in sidebar -->
 <!-- TODO: Like page -->
 <!-- TODO: Play Random video page  -->
-<!-- TODO: Kakao profile image CORS Access -->
+<!-- TODO: remove 찌꺼기 comments and videos in populate part when delete user -->
+<!-- TODO: count like dislike and report functions  -->

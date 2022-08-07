@@ -86,7 +86,7 @@ export function startGoogleLogin(req, res) {
   const baseUrl = "https://accounts.google.com/o/oauth2/v2/auth";
   const config = {
     client_id: process.env.GOOGLE_CLIENT,
-    redirect_uri: "http://localhost:4000/users/google/finish",
+    redirect_uri: process.env.DOMAIN + "/users/google/finish",
     response_type: "code",
     scope: [
       "https://www.googleapis.com/auth/userinfo.email",
@@ -101,13 +101,14 @@ export function startGoogleLogin(req, res) {
 }
 
 export async function finishGoogleLogin(req, res) {
+  console.log(req.query);
   const baseUrl = "https://oauth2.googleapis.com/token";
   const config = {
     client_id: process.env.GOOGLE_CLIENT,
     client_secret: process.env.GOOGEL_SECRET,
     code: req.query.code,
     grant_type: "authorization_code",
-    redirect_uri: "http://localhost:4000/users/google/finish",
+    redirect_uri: process.env.DOMAIN + "/users/google/finish",
   };
   const params = new URLSearchParams(config).toString();
   const resultUrl = `${baseUrl}?${params}`;
@@ -120,6 +121,7 @@ export async function finishGoogleLogin(req, res) {
     })
   ).json();
 
+  console.log(tokenData);
   const apiUrl = "https://www.googleapis.com";
   if ("access_token" in tokenData) {
     const { access_token } = tokenData;
@@ -131,8 +133,7 @@ export async function finishGoogleLogin(req, res) {
       })
     ).json();
 
-    // console.log(userData);
-
+    console.log(userData);
     if (!userData.verified_email) {
       return res.redirect("/login");
     }
@@ -175,7 +176,7 @@ export async function finishKakaoLogin(req, res) {
   const config = {
     grant_type: "authorization_code",
     client_id: process.env.KAKAO_CLIENT,
-    redirect_uri: "http://localhost:4000/users/kakao/finish",
+    redirect_uri: process.env.DOMAIN + "/users/kakao/finish",
     code: req.query.code,
     client_secret: process.env.KAKAO_SECRET,
   };

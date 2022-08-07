@@ -3,32 +3,51 @@ const videoContainer = document.getElementById("videoContainer");
 let handelComments = document.querySelectorAll("div[name='handleComment']");
 const videoComments = document.querySelector("#video-comments");
 
-function addComment(text, id) {
-  const ul = videoComments.querySelector("ul");
+function commentComponent(
+  text,
+  newCommentId,
+  newUsername,
+  newAvatar,
+  newCreatedAt
+) {
   const li = document.createElement("li");
-  const newText = document.createElement("span");
-
-  const div = document.createElement("div");
-  const spanEdit = document.createElement("span");
-  const spanEditIcon = document.createElement("i");
-  const spanDelete = document.createElement("span");
-  const spanDeleteIcon = document.createElement("i");
-
   li.className = "video-comments__comment";
-  li.dataset.id = id;
-  newText.innerText = text;
+  li.dataset.id = newCommentId;
 
-  spanEditIcon.className = "fas fa-pen";
-  spanDeleteIcon.className = "fas fa-trash-alt";
-  div.setAttribute("name", "handleComment");
+  const result = `<div class="video-comments__payloads">
+      <img src="${newAvatar}" />
+      <div>
+        <span>${newUsername}</span>
+        <span class="video-comments__createdAt"> ${newCreatedAt}</span>
+        <h3>${text}</h3>
+        <h3 class="like">like3 dislike report</h3>
+      </div>
+    </div>
+    <div name="handleComment">
+      <span id="comments-edit">
+        <i class="fas fa-pen"></i>
+      </span>
+      <span id="comments-delete">
+        <i class="fas fa-trash-alt"></i>
+      </span>
+    </div>`;
 
-  li.appendChild(newText);
-  spanEdit.appendChild(spanEditIcon);
-  spanDelete.appendChild(spanDeleteIcon);
-  div.appendChild(spanEdit);
-  div.appendChild(spanDelete);
-  li.appendChild(div);
+  li.innerHTML = result;
+  return li;
+}
+
+function addComment(text, newCommentId, newUsername, newAvatar, newCreatedAt) {
+  const ul = videoComments.querySelector("ul");
+  const li = commentComponent(
+    text,
+    newCommentId,
+    newUsername,
+    newAvatar,
+    newCreatedAt
+  );
   ul.prepend(li);
+  const spanEdit = li.querySelector("#comments-edit");
+  const spanDelete = li.querySelector("#comments-delete");
 
   spanEdit.addEventListener("click", handleCommentEdit);
   spanDelete.addEventListener("click", handleCommentDelete);
@@ -49,8 +68,9 @@ async function handleCommentCreate(event) {
   });
   if (response.status == 201) {
     textarea.value = "";
-    const { newCommentId } = await response.json();
-    addComment(text, newCommentId);
+    const { newCommentId, newUsername, newAvatar, newCreatedAt } =
+      await response.json();
+    addComment(text, newCommentId, newUsername, newAvatar, newCreatedAt);
   }
 }
 
@@ -66,7 +86,7 @@ async function updateComment(editForm, li, text, commentId) {
   });
   if (response.status == 200) {
     videoComments.removeChild(editForm);
-    li.firstChild.innerText = text;
+    li.querySelector("h3").innerText = text;
     li.style = "";
   }
 }
@@ -86,7 +106,7 @@ function handleCommentEdit(event) {
   editForm.className = "comment-form nform";
   saveButton.innerText = "Save";
   cancelButton.innerText = "Cancel";
-  editTextArea.innerText = li.firstChild.innerText;
+  editTextArea.innerText = li.querySelector("h3").innerText;
 
   editForm.appendChild(editTextArea);
   editForm.appendChild(saveButton);

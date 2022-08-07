@@ -3,16 +3,19 @@ include ../mixin/video.pug
 
 block content
   div.profile__data
-    if (loginUser.avatar)
-      if(loginUser.avatar.startsWith("upload"))
-        img(src="/" + loginUser.avatar,crossorigin).avatar
-      if(loginUser.avatar.startsWith("http"))
-        img(src=loginUser.avatar,crossorigin).avatar
-    h3=user.name
+    if (user.avatar)
+      if(user.avatar.startsWith("upload"))
+        img(src="/" + user.avatar).avatar
+      if(user.avatar.startsWith("http"))
+        img(src=loginUser.avatar).avatar
+    h3=user.username
+
   div.video-grid
     each video in user.videos
       +video(video)
     else
       span.empty__message No videos found 
-  if (String(loginUser._id) === String(user._id))
-    a(href="/users/edit") Edit user &rarr;
+  div.profile__menu
+    if (String(loginUser._id) === String(user._id))
+      a(href="/users/edit") Edit user &rarr;
+      a(href="/users/delete" onclick="return confirm('Your videos and comments are PERMANTLY REMOVED. Would you still like to DELETE?')") Delete user &rarr;

@@ -27,10 +27,16 @@ aside
 					li 
 						i.fas.fa-photo-video
 						span Library
-				a(href=`/users/${loginUser._id}`)
-					li 
-						i.fas.fa-user-alt
-						span My Profile
+				if isLogin 
+					a(href=`/users/${loginUser._id}`)
+						li 
+							i.fas.fa-user-alt
+							span My Profile
+				else
+					a(href="/login")
+						li 
+							i.fas.fa-user-alt
+							span My Profile
 				//- TODO
 				a(href="/")
 					li 

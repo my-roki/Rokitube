@@ -43,10 +43,15 @@ export async function watchVideo(req, res) {
     videos = videos.slice(0, 10);
   }
   const { id } = req.params;
-  const video = await Video.findById(id).populate("owner").populate("comments");
+  let video = await Video.findById(id)
+    .populate("owner")
+    .populate({ path: "comments", populate: { path: "owner" } });
   if (!video) {
     return res.status(404).render("404", { pageTitle: "404 Video not found" });
   }
+  video.comments = getVideoCreatedAtFromNow(video.comments);
+  console.log(video.comments);
+
   return res.status(200).render("video/watch", {
     pageTitle: video.title,
     video,

@@ -1,5 +1,7 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
+import Video from "../models/Video";
+import Comment from "../models/Comment";
 
 export function joinGet(req, res) {
   res.status(200).render("user/join", { pageTitle: "Join Page" });
@@ -192,6 +194,20 @@ export async function changePasswordPost(req, res) {
   return res.redirect("/login");
 }
 
-export function deleteUser(req, res) {
-  res.send("Delete user page");
+export async function deleteUser(req, res) {
+  const {
+    session: {
+      loginUser: { _id },
+    },
+  } = req;
+
+  console.log(_id);
+  const user = await User.findById(_id);
+  if (!user) {
+    return res.status(404).render("404", { pageTitle: "404 Video not found" });
+  }
+  await Comment.remove({ owner: _id });
+  await Video.remove({ owner: _id });
+  await User.findByIdAndDelete(_id);
+  logout(req, res);
 }
