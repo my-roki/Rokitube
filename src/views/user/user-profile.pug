@@ -5,7 +5,7 @@ block content
   div.profile__data
     if (user.avatar)
       if(user.avatar.startsWith("http"))
-        img(src=loginUser.avatar).avatar
+        img(src=user.avatar).avatar
       else
         img(src="/" + user.avatar).avatar
     h3=user.username
