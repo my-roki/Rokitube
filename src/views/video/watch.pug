@@ -45,7 +45,10 @@ block content
         div.video__data__column.video__owner
           div.video__owner__info
             a(href=`/users/${video.owner._id}`)
-              img(src=video.owner.avatar)
+              if video.owner.avatar.startsWith("http")
+                img(src=video.owner.avatar)
+              else 
+                img(src=`/${video.owner.avatar}`)
             a(href=`/users/${video.owner._id}`) 
               span=video.owner.username
           button#subscribe-button 구독
@@ -70,7 +73,10 @@ block content
           each comment in video.comments.reverse()
             li(data-id=comment._id).comments__comment
               div.comments__payloads
-                img(src=comment.owner.avatar)
+                if video.owner.avatar.startsWith("http")
+                  img(src=comment.owner.avatar)
+                else 
+                  img(src=$`/${comment.owner.avatar}`)
                 div.comments__contents
                   div.comments__commentinfo
                     span=comment.owner.username
