@@ -188,6 +188,7 @@ video.readyState > 0
   ? handleTotalTime()
   : video.addEventListener("loadedmetadata", handleTotalTime);
 video.addEventListener("timeupdate", handleCurrentTime);
+video.addEventListener("ended", handleEnded);
 
 timeline.addEventListener("input", handleTimelineInput);
 timeline.addEventListener("change", handleTimelineChange);
