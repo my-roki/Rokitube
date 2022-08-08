@@ -1,4 +1,5 @@
 import "../scss/styles.scss";
+import "../images/default-profile.png";
 
 const hamburger = document.getElementById("hamburger");
 const aside = document.querySelector("aside");
