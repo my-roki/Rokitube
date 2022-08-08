@@ -3,23 +3,24 @@ include ../mixin/video.pug
 
 block content 
   div.video-section
-    div.video-section__first
-      div(data-id=video._id)#videoContainer
+    div.main-video-section
+      div(data-id=video._id)#video-container.video-container
         if(video.videoUrl.startsWith("upload"))
           video(src=`/${video.videoUrl}`)
         if(video.videoUrl.startsWith("http"))
           video(src=video.videoUrl)
-        div#videoController.videoController
-          div.videoController__play
-            span#play.videoController__playButton
+
+        div#control.control
+          div.control__play
+            span#play.control__play-button
               i.fas.fa-play
-            div.videoController__time
+            div.control__time
               span#currentTime 00:00
               span  / 
               span#totalTime 00:00
           input(type="range",value=0, min="0", step="1")#timeline
           
-          div.videoController__volume
+          div.control__volume
             input(type="range",value=0.3, min="0", max="1", step="0.01")#volume
             span#mute
               i.fas.fa-volume-up 
@@ -28,35 +29,53 @@ block content
               i.fas.fa-expand
 
       div.video__data
-        p.video__title=video.title
-        small.video__createdAt=new Date(video.createdAt).toLocaleDateString("ko-kr", {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})
-        small.video__owner Uploaded by 
-          a(href=`/users/${video.owner._id}`) #{video.owner.username}
+        div.video__data__column
+          div.video__hashtags
+            each tag in video.hashtags
+              span #{tag}ㅤ
+          h2.video__title=video.title
+        
+        div.video__data__column.video__meta
+          div
+            small.video__views #{video.meta.views} views
+            small.video__createdAt #{new Date(video.createdAt).toLocaleDateString("en-us", {year: 'numeric', month: 'short', day: 'numeric'})}
+          //- TODO: 더보기, 간략히 기능
+          small.video__description=video.description
+          
+        div.video__data__column.video__owner
+          div.video__owner__info
+            a(href=`/users/${video.owner._id}`)
+              img(src=video.owner.avatar)
+            a(href=`/users/${video.owner._id}`) 
+              span=video.owner.username
+          button#subscribe-button 구독
 
       - const ownerCorrect = String(video.owner._id) === String(loginUser._id)
       if ownerCorrect
-        div.video__handleButton
-          a(href=`${video.id}/edit`) Edit Video &rarr;
-          br
-          a(href=`${video.id}/delete` onclick="return confirm('Are you sure you want to delete this?')") Delete Video &rarr;
+        div.video__handleMenu
+          a(href=`${video.id}/edit`) 
+            span Edit Video &rarr;
+          a(href=`${video.id}/delete` onclick="return confirm('Are you sure you want to delete this?')") 
+            span Delete Video &rarr;
 
       if isLogin
-        div.video__add__comment
+        div.video__add-comment
+          //- TODO Submit when press enter.
           form#comment-form.comment-form.nform 
             textarea(cols="1000", rows="3", placeholder="Write a comment")#textarea
-            button Add Comment
+            button Add
 
-      div#video-comments.video-comments 
+      div#video-comments.comments 
         ul
           each comment in video.comments.reverse()
-            li(data-id=comment._id).video-comments__comment
-              div.video-comments__payloads
+            li(data-id=comment._id).comments__comment
+              div.comments__payloads
                 img(src=comment.owner.avatar)
-                div.video-comments__contents
-                  div.video-comments__commentinfo
+                div.comments__contents
+                  div.comments__commentinfo
                     span=comment.owner.username
-                    span.video-comments__createdAt=comment.createdAtFromNow
-                  div.video-comments__text
+                    span.comments__createdAt=comment.createdAtFromNow
+                  div.comments__text
                     span#comment-text=comment.text
                   div.comment__like
                     i.far.fa-thumbs-up
@@ -70,8 +89,8 @@ block content
                   span#comments-delete
                     i.fas.fa-trash-alt
 
-    div.video-section__second
-      span.recommand Recommand Videos
+    div.sub-video-section
+      h3 Recommand Videos
       each video in videos
           +video(video)
 

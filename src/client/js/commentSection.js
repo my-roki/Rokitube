@@ -1,5 +1,5 @@
 const commentForm = document.getElementById("comment-form");
-const videoContainer = document.getElementById("videoContainer");
+const videoContainer = document.getElementById("video-container");
 let handelComments = document.querySelectorAll("div[name='handleComment']");
 const videoComments = document.querySelector("#video-comments");
 
@@ -11,17 +11,17 @@ function commentComponent(
   newCreatedAt
 ) {
   const li = document.createElement("li");
-  li.className = "video-comments__comment";
+  li.className = "comments__comment";
   li.dataset.id = newCommentId;
 
-  const result = `<div class="video-comments__payloads">
+  const result = `<div class="comments__payloads">
     <img src="${newAvatar}" />
-    <div class="video-comments__contents">
-      <div class="video-comments__commentinfo">
+    <div class="comments__contents">
+      <div class="comments__commentinfo">
         <span>${newUsername}</span>
-        <span class="video-comments__createdAt"> ${newCreatedAt}</span>
+        <span class="comments__createdAt"> a few seconds ago </span>
       </div>
-      <div class="video-comments__text">
+      <div class="comments__text">
         <span id="comments-text">${text}</span>
       </div>
       <div class="comment__like">
@@ -134,7 +134,6 @@ function handleCommentEdit(event) {
 
 async function handleCommentDelete(event) {
   const li = event.target.parentElement.parentElement.parentElement;
-  console.log(li);
   const {
     dataset: { id },
   } = li;

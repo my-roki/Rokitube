@@ -50,8 +50,6 @@ export async function watchVideo(req, res) {
     return res.status(404).render("404", { pageTitle: "404 Video not found" });
   }
   video.comments = getVideoCreatedAtFromNow(video.comments);
-  console.log(video.comments);
-
   return res.status(200).render("video/watch", {
     pageTitle: video.title,
     video,

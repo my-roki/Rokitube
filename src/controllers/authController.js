@@ -101,11 +101,10 @@ export function startGoogleLogin(req, res) {
 }
 
 export async function finishGoogleLogin(req, res) {
-  console.log(req.query);
   const baseUrl = "https://oauth2.googleapis.com/token";
   const config = {
     client_id: process.env.GOOGLE_CLIENT,
-    client_secret: process.env.GOOGEL_SECRET,
+    client_secret: process.env.GOOGLE_SECRET,
     code: req.query.code,
     grant_type: "authorization_code",
     redirect_uri: process.env.DOMAIN + "/users/google/finish",
@@ -121,7 +120,6 @@ export async function finishGoogleLogin(req, res) {
     })
   ).json();
 
-  console.log(tokenData);
   const apiUrl = "https://www.googleapis.com";
   if ("access_token" in tokenData) {
     const { access_token } = tokenData;
@@ -133,8 +131,8 @@ export async function finishGoogleLogin(req, res) {
       })
     ).json();
 
-    console.log(userData);
     if (!userData.verified_email) {
+      console.error("Google email Verification failed.");
       return res.redirect("/login");
     }
 
@@ -152,6 +150,7 @@ export async function finishGoogleLogin(req, res) {
     req.session.loginUser = user;
     return res.redirect("/");
   } else {
+    console.error("Google access token failed.");
     return res.redirect("/login");
   }
 }
@@ -202,8 +201,6 @@ export async function finishKakaoLogin(req, res) {
         },
       })
     ).json();
-
-    console.log(userData);
     const email = userData.kakao_account.email;
     const username = userData.kakao_account.profile.nickname;
     const avatar = userData.kakao_account.profile.profile_image_url;

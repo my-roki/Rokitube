@@ -202,7 +202,6 @@ export async function deleteUser(req, res) {
     },
   } = req;
 
-  console.log(_id);
   const user = await User.findById(_id);
   if (!user) {
     return res.status(404).render("404", { pageTitle: "404 Video not found" });
