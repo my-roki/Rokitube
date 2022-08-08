@@ -123,7 +123,10 @@ function handleCommentEdit(event) {
   li.style.display = "none";
   videoComments.prepend(editForm);
 
-  cancelButton.addEventListener("click", handelCancel);
+  cancelButton.addEventListener("click", () => {
+    videoComments.removeChild(editForm);
+    li.style = "";
+  });
   editForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const text = editTextArea.value;
