@@ -73,10 +73,10 @@ block content
           each comment in video.comments.reverse()
             li(data-id=comment._id).comments__comment
               div.comments__payloads
-                if video.owner.avatar.startsWith("http")
+                if comment.owner.avatar.startsWith("http")
                   img(src=comment.owner.avatar)
                 else 
-                  img(src=$`/${comment.owner.avatar}`)
+                  img(src=`/${comment.owner.avatar}`)
                 div.comments__contents
                   div.comments__commentinfo
                     span=comment.owner.username
